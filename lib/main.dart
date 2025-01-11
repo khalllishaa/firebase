@@ -1,6 +1,11 @@
+import 'package:firebase/push_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await PushNotifications().initNotifications();
   runApp(const MyApp());
 }
 
