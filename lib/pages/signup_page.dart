@@ -1,37 +1,19 @@
-import 'dart:developer';
-
-import 'package:firebase/pages/home_page.dart';
-import 'package:firebase/pages/login_page.dart';
 import 'package:flutter/material.dart';
-
 import '../auth_service.dart';
 import '../widgets/AppStyles.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_text_field.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
-}
-
-class _SignupPageState extends State<SignupPage> {
-  final _auth = AuthService();
-  final _name = TextEditingController();
-  final _password = TextEditingController();
-  final _email = TextEditingController();
-
-  @override
-  void dispose() {
-    _name.dispose();
-    _password.dispose();
-    _email.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final _auth = AuthService();
+    final _email = TextEditingController();
+    final _password = TextEditingController();
+    final _name = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up', style: AppStyles.heading1),
@@ -63,7 +45,10 @@ class _SignupPageState extends State<SignupPage> {
               MyButton(
                 text: "Signup",
                 color: AppStyles.textColor,
-                onPressed: _signup,
+                onPressed: () async {
+                  await _auth.createUserWithEmailAndPassword(
+                      _email.text, _password.text, context);
+                },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
@@ -71,10 +56,10 @@ class _SignupPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Already have an account', style: AppStyles.caption),
-                  SizedBox(height: AppStyles.spaceXS),
+                  Text('Already have an account?', style: AppStyles.caption),
+                  SizedBox(width: AppStyles.spaceXS),
                   InkWell(
-                    onTap: () => goToLogin(context),
+                    onTap: () => _auth.navigateToLogin(context),
                     child: Text('Login', style: AppStyles.inkwell),
                   ),
                 ],
@@ -84,25 +69,5 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
-  }
-
-  void goToLogin(BuildContext context) => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const LoginPage()),
-  );
-
-  void goToHome(BuildContext context) => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
-  );
-
-  Future<void> _signup() async {
-    final user =
-    await _auth.createUserWithEmailAndPassword(_email.text, _password.text);
-
-    if (user != null) {
-      log("User Created Successfully");
-      goToHome(context);
-    }
   }
 }

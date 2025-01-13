@@ -1,35 +1,18 @@
-import 'package:firebase/pages/signup_page.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import '../auth_service.dart';
 import '../widgets/AppStyles.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_text_field.dart';
-import 'home_page.dart';
 
-
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final _auth = AuthService();
-  final _password = TextEditingController();
-  final _email = TextEditingController();
-  bool isLoading = false;
-
-  @override
-  void dispose() {
-    _password.dispose();
-    _email.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final _auth = AuthService();
+    final _email = TextEditingController();
+    final _password = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login', style: AppStyles.heading1),
@@ -55,26 +38,21 @@ class _LoginPageState extends State<LoginPage> {
               MyButton(
                 text: "Login",
                 color: AppStyles.textColor,
-                onPressed: _login,
+                onPressed: () async {
+                  await _auth.loginUserWithEmailAndPassword(
+                      _email.text, _password.text,);
+                },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
               SizedBox(height: AppStyles.spaceS),
               Text('Or', style: AppStyles.caption),
               SizedBox(height: AppStyles.spaceS),
-              isLoading
-                  ?const CircularProgressIndicator():
               MyButton(
                 text: 'Signin with Google',
                 color: AppStyles.textColor,
                 onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await _auth.loginWithGoogle();
-                  setState(() {
-                    isLoading = false;
-                  });
+                  await _auth.loginWithGoogle(context);
                 },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
@@ -83,10 +61,10 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have ann account?", style: AppStyles.caption),
-                  SizedBox(height: AppStyles.spaceXS),
+                  Text("Don't have an account?", style: AppStyles.caption),
+                  SizedBox(width: AppStyles.spaceXS),
                   InkWell(
-                    onTap: () => goToSignup(context),
+                    onTap: () => _auth.navigateToSignup(context),
                     child: Text('Sign up', style: AppStyles.inkwell),
                   ),
                 ],
@@ -96,34 +74,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  void goToSignup(BuildContext context) => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const SignupPage()),
-  );
-
-  void goToHome(BuildContext context) => Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
-  );
-
-  Future<void> _login() async {
-    final user =
-    await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
-
-    if (user != null) {
-      log("User Logged In");
-      goToHome(context);
-    }
-  }
-
-  Future<void> _loginWithGoogle() async {
-    final user = await _auth.loginWithGoogle();
-
-    if (user?.user != null) {
-      log("User Logged In with Google");
-      goToHome(context);
-    }
   }
 }

@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
               text: "Logout",
               color: AppStyles.textColor,
               onPressed: () async {
-                await auth.signout();
+                await auth.signOut();
                 goToLogin(context);
               },
               fontSize: 12,
