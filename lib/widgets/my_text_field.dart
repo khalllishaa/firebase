@@ -2,59 +2,56 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'color.dart';
+import 'AppStyles.dart';
 
 class MyTextField extends StatelessWidget {
   final String hintText;
   final bool isObsecure;
-  final double fontsize;
   final TextEditingController? controller;
   const MyTextField(
       {super.key,
         required this.hintText,
         required this.isObsecure,
-        required this.fontsize,
         this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: AppStyles.paddingS),
       decoration: BoxDecoration(
-        color: backGroundColor,
-        borderRadius: BorderRadius.circular((8)),
+        color: AppStyles.backGroundColor,
+        borderRadius: BorderRadius.circular(AppStyles.radiusS),
       ),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: GoogleFonts.poppins(
-            color: textColor,
-            fontSize: fontsize,
+            color: AppStyles.textColor,
           ),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 20,
+            horizontal: AppStyles.paddingL,
+            vertical: AppStyles.paddingXL,
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: textColor,
+              color: AppStyles.textColor,
               width: 3.0,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppStyles.radiusM),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: backGroundColor,
+              color: AppStyles.backGroundColor,
               width: 2.0,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppStyles.radiusM),
           ),
         ),
         style: GoogleFonts.poppins(
-          color: textColor,
+          color: AppStyles.textColor,
         ),
         obscureText: isObsecure,
       ),

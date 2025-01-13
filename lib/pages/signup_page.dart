@@ -5,9 +5,8 @@ import 'package:firebase/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 import '../auth_service.dart';
-import '../widgets/color.dart';
+import '../widgets/AppStyles.dart';
 import '../widgets/my_button.dart';
-import '../widgets/my_text.dart';
 import '../widgets/my_text_field.dart';
 
 class SignupPage extends StatefulWidget {
@@ -35,61 +34,48 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: MyText(text: "Sign Up", color: textColor, fontsize: 18, fontWeight: FontWeight.bold),
+        title: Text('Sign Up', style: AppStyles.heading1),
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppStyles.paddingL),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               MyTextField(
                 hintText: "Your Name",
                 isObsecure: false,
-                fontsize: 15,
                 controller: _name,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppStyles.spaceM),
               MyTextField(
                 hintText: "Your Email",
                 isObsecure: false,
-                fontsize: 15,
                 controller: _email,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppStyles.spaceM),
               MyTextField(
                 hintText: "Your Password",
                 isObsecure: true,
-                fontsize: 15,
                 controller: _password,
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: AppStyles.spaceXL),
               MyButton(
                 text: "Signup",
-                color: textColor,
+                color: AppStyles.textColor,
                 onPressed: _signup,
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: AppStyles.spaceL),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MyText(
-                    text: "Already have an account?",
-                    color: textColor,
-                    fontsize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  const SizedBox(width: 5),
+                  Text('Already have an account', style: AppStyles.caption),
+                  SizedBox(height: AppStyles.spaceXS),
                   InkWell(
                     onTap: () => goToLogin(context),
-                    child: MyText(
-                      text: "Login",
-                      color: higlightColor,
-                      fontsize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    child: Text('Login', style: AppStyles.inkwell),
                   ),
                 ],
               ),

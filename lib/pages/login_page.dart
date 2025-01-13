@@ -2,9 +2,8 @@ import 'package:firebase/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import '../auth_service.dart';
-import '../widgets/color.dart';
+import '../widgets/AppStyles.dart';
 import '../widgets/my_button.dart';
-import '../widgets/my_text.dart';
 import '../widgets/my_text_field.dart';
 import 'home_page.dart';
 
@@ -33,12 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: MyText(
-          text: "Login",
-          color: textColor,
-          fontsize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        title: Text('Login', style: AppStyles.heading1),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -49,37 +43,30 @@ class _LoginPageState extends State<LoginPage> {
               MyTextField(
                 hintText: "Your Email",
                 isObsecure: false,
-                fontsize: 14,
                 controller: _email,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppStyles.spaceM),
               MyTextField(
                 hintText: "Your Password",
                 isObsecure: true,
-                fontsize: 14,
                 controller: _password,
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: AppStyles.spaceXL),
               MyButton(
                 text: "Login",
-                color: textColor,
+                color: AppStyles.textColor,
                 onPressed: _login,
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
-              const SizedBox(height: 10),
-              MyText(
-                text: "Or",
-                color: textColor,
-                fontsize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-              const SizedBox(height: 10),
+              SizedBox(height: AppStyles.spaceS),
+              Text('Or', style: AppStyles.caption),
+              SizedBox(height: AppStyles.spaceS),
               isLoading
                   ?const CircularProgressIndicator():
               MyButton(
                 text: 'Signin with Google',
-                color: textColor,
+                color: AppStyles.textColor,
                 onPressed: () async {
                   setState(() {
                     isLoading = true;
@@ -92,25 +79,15 @@ class _LoginPageState extends State<LoginPage> {
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: AppStyles.spaceS),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MyText(
-                    text: "Don't have an account?",
-                    color: textColor,
-                    fontsize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  const SizedBox(width: 5),
+                  Text("Don't have ann account?", style: AppStyles.caption),
+                  SizedBox(height: AppStyles.spaceXS),
                   InkWell(
                     onTap: () => goToSignup(context),
-                    child: MyText(
-                      text: "Sign Up",
-                      color: higlightColor,
-                      fontsize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    child: Text('Sign up', style: AppStyles.inkwell),
                   ),
                 ],
               ),
