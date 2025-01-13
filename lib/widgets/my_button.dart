@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'color.dart';
+import 'AppStyles.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -18,17 +18,17 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: AppStyles.paddingS),
       child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-              backgroundColor: textColor,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              backgroundColor: AppStyles.textColor,
+              padding: const EdgeInsets.symmetric(horizontal: AppStyles.paddingL, vertical: AppStyles.paddingM),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8))),
+                  borderRadius: BorderRadius.circular(AppStyles.radiusS))),
           child: Text(
             text,
-            style: GoogleFonts.poppins(color: backGroundColor, fontSize: fontSize, fontWeight: fontWeight),
+            style: GoogleFonts.poppins(color: AppStyles.backGroundColor, fontSize: fontSize, fontWeight: fontWeight),
           )),
     );
   }

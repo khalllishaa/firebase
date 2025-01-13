@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'Poppins',
       ),
       home: LoginPage(),
     );
@@ -69,9 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color.dart here to a specific color.dart (to
+        // TRY THIS: Try changing the AppStyles.dart here to a specific AppStyles.dart (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color.dart while the other colors stay the same.
+        // change AppStyles.dart while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
