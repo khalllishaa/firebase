@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase/pages/home.dart';
 import 'package:firebase/pages/home_page.dart';
 import 'package:firebase/pages/login_page.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class _SignupPageState extends State<SignupPage> {
 
   void goToHome(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
+    MaterialPageRoute(builder: (context) => const Home()),
   );
 
   Future<void> _signup() async {
