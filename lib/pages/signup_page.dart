@@ -16,6 +16,7 @@ class SignupPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Sign Up', style: AppStyles.heading1),
       ),
       body: Center(
@@ -48,6 +49,18 @@ class SignupPage extends StatelessWidget {
                 onPressed: () async {
                   await _auth.createUserWithEmailAndPassword(
                       _email.text, _password.text, context);
+                },
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+              ),
+              SizedBox(height: AppStyles.spaceS),
+              Text('Or', style: AppStyles.caption),
+              SizedBox(height: AppStyles.spaceS),
+              MyButton(
+                text: 'Signin with Google',
+                color: AppStyles.textColor,
+                onPressed: () async {
+                  await _auth.loginWithGoogle(context);
                 },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,

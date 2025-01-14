@@ -29,7 +29,9 @@ class MyButton extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.poppins(color: AppStyles.backGroundColor, fontSize: fontSize, fontWeight: fontWeight),
-          )),
+          ),
+
+      ),
     );
   }
 }

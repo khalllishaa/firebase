@@ -1,4 +1,5 @@
 import 'package:firebase/pages/login_page.dart';
+import 'package:firebase/pages/signup_page.dart';
 import 'package:firebase/push_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Poppins',
       ),
-      home: LoginPage(),
+      home: SignupPage(),
     );
   }
 }

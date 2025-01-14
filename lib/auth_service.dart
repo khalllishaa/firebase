@@ -37,27 +37,16 @@ class AuthService {
     return null;
   }
 
-  Future<UserCredential?> loginUserWithEmailAndPassword(
+  Future<User?> loginUserWithEmailAndPassword(
       String email, String password) async {
     try {
-      // Sign out any existing sessions first to avoid issues with expired credentials
-      await FirebaseAuth.instance.signOut();
-
-      // Proceed with login
-      final userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      log("Firebase error: ${e.code}: ${e.message}");
-      if (e.code == 'invalid-credential') {
-        log('The credentials provided are incorrect or malformed.');
-      }
-      return null;
+      final cred = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return cred.user;
     } catch (e) {
-      log("Unknown error: $e");
-      return null;
+      log("Something went wrong");
     }
+    return null;
   }
 
 

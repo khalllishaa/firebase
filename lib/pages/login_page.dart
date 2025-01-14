@@ -46,18 +46,6 @@ class LoginPage extends StatelessWidget {
                 fontWeight: FontWeight.normal,
               ),
               SizedBox(height: AppStyles.spaceS),
-              Text('Or', style: AppStyles.caption),
-              SizedBox(height: AppStyles.spaceS),
-              MyButton(
-                text: 'Signin with Google',
-                color: AppStyles.textColor,
-                onPressed: () async {
-                  await _auth.loginWithGoogle(context);
-                },
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-              ),
-              SizedBox(height: AppStyles.spaceS),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
