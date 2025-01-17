@@ -1,145 +1,103 @@
-import 'package:firebase/service/database.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
+import '../controllers/employee_controllers.dart';
 
-class Employee extends StatefulWidget {
-  const Employee({super.key});
+class Employee extends StatelessWidget {
+  final EmployeeController controller = Get.put(EmployeeController());
 
-  @override
-  State<Employee> createState() => _EmployeeState();
-}
-
-class _EmployeeState extends State<Employee> {
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController agecontroller = TextEditingController();
-  TextEditingController locationcontroller = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Employee",
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              "Form",
-              style: TextStyle(
-                color: Colors.yellow,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          ],
-        ),
+        title: const Text("Add Employee"),
+        backgroundColor: Colors.white,
+        elevation: 4,
       ),
-      body: SingleChildScrollView( // Membungkus konten dalam SingleChildScrollView
-        child: Container(
-          margin: EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Name",
+                "Employee Details",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10.0),
-              Container(
-                padding: EdgeInsets.only(left: 10.0),
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextField(
-                  controller: namecontroller,
-                  decoration: InputDecoration(border: InputBorder.none),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                "Age",
-                style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10.0),
-              Container(
-                padding: EdgeInsets.only(left: 10.0),
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10)),
-                child: TextField(
-                  controller: agecontroller,
-                  decoration: InputDecoration(border: InputBorder.none),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                "Location",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10.0),
-              Container(
-                padding: EdgeInsets.only(left: 10.0),
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10)),
-                child: TextField(
-                  controller: locationcontroller,
-                  decoration: InputDecoration(border: InputBorder.none),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Center(
+              const SizedBox(height: 30),
+              _buildTextField("Name", nameController),
+              _buildTextField("Age", ageController),
+              _buildTextField("Location", locationController),
+              const SizedBox(height: 30),
+              Center(  // Membungkus tombol dengan Center
                 child: ElevatedButton(
-                    onPressed: () async {
-                      String Id = randomAlphaNumeric(10);
-                      Map<String, dynamic> employeeInfoMap = {
-                        "Name": namecontroller.text,
-                        "Age": agecontroller.text,
-                        "Id": Id,
-                        "Location": locationcontroller.text,
-                      };
-                      await DatabaseMethods()
-                          .addEmployeeDetails(employeeInfoMap, Id)
-                          .then((value) {
-                        Fluttertoast.showToast(
-                          msg: "Employee details have been uploaded successfully",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                        );
-                      });
-                    },
-                    child: Text(
-                      "Add",
-                      style:
-                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                    )),
+                  onPressed: () {
+                    String id = randomAlphaNumeric(10);
+                    Map<String, dynamic> data = {
+                      "Name": nameController.text,
+                      "Age": ageController.text,
+                      "Location": locationController.text,
+                      "Id": id,
+                    };
+                    controller.addEmployee(data);
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                    "Add Employee",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.black, width: 2),
+          ),
+        ),
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.black,
         ),
       ),
     );

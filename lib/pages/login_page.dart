@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void goToHome(BuildContext context) => Navigator.pushReplacement(
     context,
-    MaterialPageRoute(builder: (context) => const Home()),
+    MaterialPageRoute(builder: (context) =>  Home()),
   );
 
   Future<void> _login() async {
