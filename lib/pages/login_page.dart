@@ -63,10 +63,21 @@ class _LoginPageState extends State<LoginPage> {
               MyButton(
                 text: "Login",
                 color: textColor,
-                onPressed: _login,
+                onPressed: () async {
+                  final user = await _auth.loginUserWithEmailAndPassword(
+                      _email.text,
+                      _password.text
+                  );
+
+                  if (user != null) {
+                    log("User Logged In");
+                    goToHome(context);
+                  }
+                },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
+
               const SizedBox(height: 10),
               MyText(
                 text: "Or",
@@ -75,19 +86,17 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.bold,
               ),
               const SizedBox(height: 10),
-              isLoading
-                  ?const CircularProgressIndicator():
+
               MyButton(
                 text: 'Signin with Google',
                 color: textColor,
                 onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await _auth.loginWithGoogle();
-                  setState(() {
-                    isLoading = false;
-                  });
+                  final user = await _auth.loginWithGoogle();
+
+                  if (user?.user != null) {
+                    log("User Logged In with Google");
+                    goToHome(context);
+                  }
                 },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
@@ -121,32 +130,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void goToSignup(BuildContext context) => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const SignupPage()),
-  );
+  void goToSignup(BuildContext context) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SignupPage()),
+      );
 
-  void goToHome(BuildContext context) => Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
-  );
-
-  Future<void> _login() async {
-    final user =
-    await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
-
-    if (user != null) {
-      log("User Logged In");
-      goToHome(context);
-    }
+  void goToHome(BuildContext context) =>
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
   }
-
-  Future<void> _loginWithGoogle() async {
-    final user = await _auth.loginWithGoogle();
-
-    if (user?.user != null) {
-      log("User Logged In with Google");
-      goToHome(context);
-    }
-  }
-}
