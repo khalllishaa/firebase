@@ -1,38 +1,31 @@
 import 'dart:developer';
-import 'package:firebase/pages/home_page.dart';
-import 'package:firebase/pages/login_page.dart';
-import 'package:firebase/pages/signup_page.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/material.dart';
 
 class AuthService {
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? get currentUser => _auth.currentUser;
 
-  Future<UserCredential?> loginWithGoogle(BuildContext context) async {
-    try {
-      final googleUser = await GoogleSignIn().signIn();
+  Future<UserCredential?> loginWithGoogle() async{
+    try{
+      final googleUser =await GoogleSignIn().signIn();
       final googleAuth = await googleUser?.authentication;
-      final cred = GoogleAuthProvider.credential(
-          idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
-      final userCredential = await _auth.signInWithCredential(cred);
-      _navigateToHome(context);
-      return userCredential;
-    } catch (e) {
-      log(e.toString());
+      final cred = GoogleAuthProvider.credential(idToken: googleAuth?.idToken,accessToken: googleAuth?.accessToken);
+      return await _auth.signInWithCredential(cred);
+    }catch(e){
+      print(e.toString());
     }
-    return null;
   }
 
   Future<User?> createUserWithEmailAndPassword(
-      String email, String password, BuildContext context) async {
+      String email, String password) async {
     try {
       final cred = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      _navigateToHome(context);
       return cred.user;
     } catch (e) {
-      log("Error during signup: $e");
+      log("Something went wrong");
     }
     return null;
   }
@@ -49,34 +42,13 @@ class AuthService {
     return null;
   }
 
-
-
-  void navigateToSignup(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SignupPage()),
-    );
-  }
-
-  void navigateToLogin(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
-  }
-
-  void _navigateToHome(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
-    );
-  }
-
-  Future<void> signOut() async {
+  Future<void> signout() async {
     try {
       await _auth.signOut();
     } catch (e) {
-      log("Error during signout: $e");
+      log("Something went wrong");
     }
   }
 }
+
+
