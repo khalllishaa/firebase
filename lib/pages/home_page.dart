@@ -1,6 +1,6 @@
 import 'package:firebase/pages/login_page.dart';
-import 'package:firebase/widgets/My_Button.dart';
 import 'package:firebase/widgets/AppStyles.dart';
+import 'package:firebase/widgets/My_Button.dart';
 import 'package:flutter/material.dart';
 
 import '../auth_service.dart';
@@ -14,14 +14,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center, // Pusatkan widget di tengah layar
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Tambahkan sedikit jarak antar widget jika diperlukan
             MyButton(
               text: "Logout",
               color: AppStyles.textColor,
               onPressed: () async {
-                await auth.signOut();
+                await auth.signout();
                 goToLogin(context);
               },
               fontSize: 12,
@@ -40,4 +41,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
 
