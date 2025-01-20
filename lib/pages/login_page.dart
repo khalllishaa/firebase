@@ -4,7 +4,7 @@ import 'package:firebase/widgets/AppStyles.dart';
 import 'package:firebase/widgets/my_text_button.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import '../auth_service.dart';
+import '../service/auth_service.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_text_field.dart';
 import 'home_page.dart';
