@@ -5,7 +5,7 @@ import 'package:firebase/pages/login_page.dart';
 import 'package:firebase/widgets/AppStyles.dart';
 import 'package:flutter/material.dart';
 
-import '../auth_service.dart';
+import '../service/auth_service.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_text_field.dart';
 
