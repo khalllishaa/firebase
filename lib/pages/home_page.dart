@@ -1,6 +1,9 @@
 import 'package:firebase/pages/login_page.dart';
+import 'package:firebase/widgets/AppStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
+
 import '../controllers/employee_controllers.dart';
 import 'employee.dart';
 
@@ -9,73 +12,104 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Memuat data karyawan saat halaman dimuat
     controller.fetchEmployees();
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Employee Management"),
+        automaticallyImplyLeading: false,  // Disable the back button
+        title: Text(
+          "Employee Management",
+          style: AppStyles.heading1,
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: Icon(Icons.refresh),
             onPressed: () {
-              controller.fetchEmployees(); // Wrap fetchEmployees in a closure
+              controller.fetchEmployees();
             },
           ),
           IconButton(
-            icon: const Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.exit_to_app_outlined),
             onPressed: () {
-              Get.offAll(() => LoginPage()); // Wrap Get.offAll in a closure
+              // Get.offAll(() => LoginPage());
+              Get.defaultDialog(
+                title: "Log Out",
+                middleText: "Are you sure you want to log out?",
+                titleStyle: AppStyles.heading1.copyWith(color: AppStyles.backGroundColor),
+                middleTextStyle: AppStyles.button,
+                backgroundColor: AppStyles.textColor,
+                radius: AppStyles.radiusXL,
+                barrierDismissible: false,
+                cancel: OutlinedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppStyles.backGroundColor),
+                    padding: EdgeInsets.symmetric(horizontal: AppStyles.paddingL, vertical: AppStyles.paddingM),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppStyles.radiusXXL),
+                    ),
+                  ),
+                  child: Text(
+                    "No",
+                    style: AppStyles.button,
+                  ),
+                ),
+                confirm: ElevatedButton(
+                  onPressed: () {
+                    Get.offAll(() => LoginPage());
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppStyles.backGroundColor,
+                    padding: EdgeInsets.symmetric(horizontal: AppStyles.paddingL, vertical: AppStyles.paddingM),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppStyles.radiusXXL),
+                    ),
+                    elevation: 4,
+                  ),
+                  child: Text(
+                    "Yes",
+                    style: AppStyles.button.copyWith(color: AppStyles.textColor),
+                  ),
+                ),
+              );
             },
           ),
         ],
+        centerTitle: true,
       ),
       body: Obx(() {
-        // Menampilkan daftar karyawan menggunakan Obx untuk memantau perubahan data
         if (controller.employees.isEmpty) {
           return const Center(child: Text("No employees found."));
         }
-
         return ListView.builder(
           itemCount: controller.employees.length,
           itemBuilder: (context, index) {
             var employee = controller.employees[index];
             return Card(
-              margin:
-              const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              elevation: 6, // Menambah bayangan pada card
+              margin: EdgeInsets.symmetric(vertical: AppStyles.paddingS, horizontal: AppStyles.paddingL),
+              elevation: 6,
               shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(12), // Sudut membulat pada card
+                borderRadius: BorderRadius.circular(AppStyles.radiusM),
               ),
-              color: Colors.white, // Card background menjadi hitam
+              color: AppStyles.backGroundColor,
               child: ListTile(
-                contentPadding: const EdgeInsets.all(
-                    16.0), // Menambah padding di dalam card
+                contentPadding: EdgeInsets.all(AppStyles.paddingL),
                 title: Text(
                   employee["Name"] ?? "No Name",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black, // Ubah teks menjadi putih
-                  ),
+                  style: AppStyles.heading1
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Age: ${employee["Age"] ?? 'Unknown'}",
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 0, 0,
-                            0), // Warna teks putih dengan opasitas lebih rendah
-                      ),
+                      style: AppStyles.text,
                     ),
                     Text(
                       "Location: ${employee["Location"] ?? 'Unknown'}",
-                      style: TextStyle(
-                        color: Colors
-                            .black, // Warna teks putih dengan opasitas lebih rendah
-                      ),
+                      style: AppStyles.text,
                     ),
                   ],
                 ),
@@ -83,28 +117,56 @@ class Home extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit,
-                          color: Color.fromARGB(255, 0, 0, 0)),
+                      icon: Icon(IconlyBold.edit, size: AppStyles.iconL, color: AppStyles.textColor),
                       onPressed: () {
-                        // Navigasi ke dialog edit karyawan
                         Get.dialog(EditEmployeeDialog(employee: employee));
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete,
-                          color: Color.fromARGB(255, 0, 0, 0)),
+                      icon: Icon(IconlyBold.delete, size: AppStyles.iconL, color: AppStyles.error),
                       onPressed: () {
-                        // Konfirmasi sebelum menghapus karyawan
                         Get.defaultDialog(
-                          title: "Delete Employee",
-                          middleText:
-                          "Are you sure you want to delete this employee?",
-                          textConfirm: "Yes",
-                          textCancel: "No",
-                          onConfirm: () {
-                            controller.deleteEmployee(employee["Id"]);
-                            Get.back(); // Menutup dialog
-                          },
+                          title: "Delete",
+                          middleText: "Are you sure you want to delete this data?",
+                          titleStyle: AppStyles.heading1.copyWith(color: AppStyles.backGroundColor),
+                          middleTextStyle: AppStyles.button,
+                          backgroundColor: AppStyles.textColor,
+                          radius: AppStyles.radiusXL,
+                          barrierDismissible: false,
+                          cancel: OutlinedButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: AppStyles.backGroundColor),
+                              padding: EdgeInsets.symmetric(horizontal: AppStyles.paddingL, vertical: AppStyles.paddingM),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(AppStyles.radiusXXL),
+                              ),
+                            ),
+                            child: Text(
+                              "No",
+                              style: AppStyles.button,
+                            ),
+                          ),
+                          confirm: ElevatedButton(
+                            onPressed: () {
+                              controller.deleteEmployee(employee["Id"]);
+                              Get.back();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppStyles.backGroundColor,
+                              padding: EdgeInsets.symmetric(horizontal: AppStyles.paddingL, vertical: AppStyles.paddingM),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(AppStyles.radiusXXL),
+                              ),
+                              elevation: 4,
+                            ),
+                            child: Text(
+                              "Yes",
+                              style: AppStyles.button.copyWith(color: AppStyles.textColor),
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -117,18 +179,15 @@ class Home extends StatelessWidget {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigasi ke halaman form tambah karyawan
           Get.to(() => Employee());
         },
-        backgroundColor: const Color.fromARGB(
-            255, 255, 255, 255), // Change the background color to black
-        child: const Icon(Icons.add),
+        backgroundColor: AppStyles.textColor,
+        child: Icon(IconlyBold.plus, size: AppStyles.iconXL, color: AppStyles.backGroundColor),
       ),
     );
   }
 }
 
-// Dialog untuk mengedit karyawan
 class EditEmployeeDialog extends StatelessWidget {
   final Map<String, dynamic> employee;
   final EmployeeController controller = Get.find();
@@ -157,7 +216,6 @@ class EditEmployeeDialog extends StatelessWidget {
       actions: [
         ElevatedButton(
           onPressed: () {
-            // Mengupdate data karyawan
             Map<String, dynamic> updatedData = {
               "Name": nameController.text,
               "Age": ageController.text,
@@ -165,13 +223,12 @@ class EditEmployeeDialog extends StatelessWidget {
               "Id": employee["Id"],
             };
             controller.updateEmployee(employee["Id"], updatedData);
-            Get.back(); // Menutup dialog
+            Get.back();
           },
           child: const Text("Update"),
         ),
         ElevatedButton(
           onPressed: () {
-            // Menutup dialog tanpa perubahan
             Get.back();
           },
           child: const Text("Cancel"),
