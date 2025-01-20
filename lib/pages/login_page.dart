@@ -1,6 +1,7 @@
 
 import 'package:firebase/pages/signup_page.dart';
 import 'package:firebase/widgets/AppStyles.dart';
+import 'package:firebase/widgets/my_text_button.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import '../auth_service.dart';
@@ -74,22 +75,15 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
             Text("or", style: AppStyles.caption,),
                SizedBox(height: 10),
+              MyTextButton(onPressed:() async {
+                final user = await _auth.loginWithGoogle();
 
-              MyButton(
-                text: 'Signin with Google',
-                color: AppStyles.textColor,
-                onPressed: () async {
-                  final user = await _auth.loginWithGoogle();
-
-                  if (user?.user != null) {
-                    log("User Logged In with Google");
-                    goToHome(context);
-                  }
-                },
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-              ),
-              const SizedBox(height: 10),
+                if (user?.user != null) {
+                  log("User Logged In with Google");
+                  goToHome(context);
+                }
+              }, ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
