@@ -114,11 +114,10 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => const SignupPage()),
       );
 
-  void goToHome(BuildContext context) =>
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+  void goToHome(BuildContext context) => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Home()),
+  );
 }
 
 
