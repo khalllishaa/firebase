@@ -91,9 +91,9 @@ class _SignupPageState extends State<SignupPage> {
     MaterialPageRoute(builder: (context) => const LoginPage()),
   );
 
-  void goToHome(BuildContext context) => Navigator.push(
+  void goToHome(BuildContext context) => Navigator.pushReplacement(
     context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
+    MaterialPageRoute(builder: (context) =>  Home()),
   );
 
   Future<void> _signup() async {
