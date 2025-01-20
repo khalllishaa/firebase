@@ -1,3 +1,4 @@
+import 'package:firebase/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/employee_controllers.dart';
@@ -17,7 +18,15 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: controller.fetchEmployees, // Refresh data karyawan
+            onPressed: () {
+              controller.fetchEmployees(); // Wrap fetchEmployees in a closure
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () {
+              Get.offAll(() => LoginPage()); // Wrap Get.offAll in a closure
+            },
           ),
         ],
       ),
@@ -32,20 +41,23 @@ class Home extends StatelessWidget {
           itemBuilder: (context, index) {
             var employee = controller.employees[index];
             return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              elevation: 6,  // Menambah bayangan pada card
+              margin:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              elevation: 6, // Menambah bayangan pada card
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),  // Sudut membulat pada card
+                borderRadius:
+                    BorderRadius.circular(12), // Sudut membulat pada card
               ),
               color: Colors.white, // Card background menjadi hitam
               child: ListTile(
-                contentPadding: const EdgeInsets.all(16.0), // Menambah padding di dalam card
+                contentPadding: const EdgeInsets.all(
+                    16.0), // Menambah padding di dalam card
                 title: Text(
                   employee["Name"] ?? "No Name",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,  // Ubah teks menjadi putih
+                    color: Colors.black, // Ubah teks menjadi putih
                   ),
                 ),
                 subtitle: Column(
@@ -54,34 +66,39 @@ class Home extends StatelessWidget {
                     Text(
                       "Age: ${employee["Age"] ?? 'Unknown'}",
                       style: TextStyle(
-                        color: Colors.black,  // Warna teks putih dengan opasitas lebih rendah
+                        color: const Color.fromARGB(255, 0, 0,
+                            0), // Warna teks putih dengan opasitas lebih rendah
                       ),
                     ),
                     Text(
-                      "Location: ${employee["Location"] ?? 'Unknown'}",
-                      style: TextStyle(
-                        color: Colors.black,  // Warna teks putih dengan opasitas lebih rendah
-                      ),
-                    ),
+                        "Location: ${employee["Location"] ?? 'Unknown'}",
+                        style: TextStyle(
+                          color: Colors
+                              .black, // Warna teks putih dengan opasitas lebih rendah
+                        ),
+                        S),
                   ],
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit, color: Colors.orange),
+                      icon: const Icon(Icons.edit,
+                          color: Color.fromARGB(255, 0, 0, 0)),
                       onPressed: () {
                         // Navigasi ke dialog edit karyawan
                         Get.dialog(EditEmployeeDialog(employee: employee));
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
+                      icon: const Icon(Icons.delete,
+                          color: Color.fromARGB(255, 0, 0, 0)),
                       onPressed: () {
                         // Konfirmasi sebelum menghapus karyawan
                         Get.defaultDialog(
                           title: "Delete Employee",
-                          middleText: "Are you sure you want to delete this employee?",
+                          middleText:
+                              "Are you sure you want to delete this employee?",
                           textConfirm: "Yes",
                           textCancel: "No",
                           onConfirm: () {
@@ -97,13 +114,14 @@ class Home extends StatelessWidget {
             );
           },
         );
-
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigasi ke halaman form tambah karyawan
           Get.to(() => Employee());
         },
+        backgroundColor: const Color.fromARGB(
+            255, 255, 255, 255), // Change the background color to black
         child: const Icon(Icons.add),
       ),
     );
@@ -119,9 +137,12 @@ class EditEmployeeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController(text: employee["Name"]);
-    TextEditingController ageController = TextEditingController(text: employee["Age"]);
-    TextEditingController locationController = TextEditingController(text: employee["Location"]);
+    TextEditingController nameController =
+        TextEditingController(text: employee["Name"]);
+    TextEditingController ageController =
+        TextEditingController(text: employee["Age"]);
+    TextEditingController locationController =
+        TextEditingController(text: employee["Location"]);
 
     return AlertDialog(
       title: const Text("Edit Employee"),

@@ -13,11 +13,7 @@ class Employee extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Employee"),
-        backgroundColor: Colors.white,
-        elevation: 4,
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -37,7 +33,8 @@ class Employee extends StatelessWidget {
               _buildTextField("Age", ageController),
               _buildTextField("Location", locationController),
               const SizedBox(height: 30),
-              Center(  // Membungkus tombol dengan Center
+              Center(
+                // Membungkus tombol dengan Center
                 child: ElevatedButton(
                   onPressed: () {
                     String id = randomAlphaNumeric(10);
@@ -51,10 +48,11 @@ class Employee extends StatelessWidget {
                     Get.back();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 12.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     elevation: 5,
                   ),
