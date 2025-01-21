@@ -7,7 +7,7 @@ import 'package:iconly/iconly.dart';
 import '../controllers/NoteController.dart';
 import 'notes.dart';
 
-class Homie extends StatelessWidget {
+class HomePage extends StatelessWidget {
   final NoteController controller = Get.put(NoteController());
 
   @override

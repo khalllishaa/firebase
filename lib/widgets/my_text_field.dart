@@ -9,12 +9,15 @@ class MyTextField extends StatefulWidget {
   final bool isObsecure;
   final TextEditingController? controller;
   final String? Function(String?)? validator; // Validator function
+  final Function(String)? onChanged; // Add this line
+
   const MyTextField({
     super.key,
     required this.hintText,
     required this.isObsecure,
     this.controller,
     this.validator,
+    this.onChanged, // Add this line
   });
 
   @override
@@ -39,6 +42,9 @@ class _MyTextFieldState extends State<MyTextField> {
           TextField(
             controller: widget.controller,
             onChanged: (value) {
+              if (widget.onChanged != null) {
+                widget.onChanged!(value); // Call the onChanged function
+              }
               if (widget.validator != null) {
                 setState(() {
                   errorText = widget.validator!(value);
