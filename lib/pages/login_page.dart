@@ -1,14 +1,13 @@
-
 import 'package:firebase/pages/signup_page.dart';
 import 'package:firebase/widgets/AppStyles.dart';
 import 'package:firebase/widgets/my_text_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'dart:developer';
 import '../service/auth_service.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_text_field.dart';
 import 'home_page.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,6 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   final _password = TextEditingController();
   final _email = TextEditingController();
   bool isLoading = false;
+  bool _isEmailValid = true;
+  bool _isPasswordValid = true;
 
   @override
   void dispose() {
@@ -34,7 +35,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login", style: AppStyles.heading1,)
+        title: Text(
+          "Login",
+          style: AppStyles.heading1,
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -46,52 +50,128 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "Your Email",
                 isObsecure: false,
                 controller: _email,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Email cannot be empty";
+                  } else if (!value.contains("@gmail.com")) {
+                    return "Email must be a valid @gmail.com address";
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppStyles.spaceXL),
               MyTextField(
                 hintText: "Your Password",
                 isObsecure: true,
                 controller: _password,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Password cannot be empty";
+                  } else if (value.length < 6) {
+                    return "Password must be at least 6 characters";
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: AppStyles.spaceXL),
               MyButton(
                 text: "Login",
                 color: AppStyles.textColor,
                 onPressed: () async {
-                  final user = await _auth.loginUserWithEmailAndPassword(
-                      _email.text,
-                      _password.text
-                  );
+                  final email = _email.text;
+                  final password = _password.text;
 
-                  if (user != null) {
-                    log("User Logged In");
-                    goToHome(context);
+                  // Validasi input email dan password
+                  setState(() {
+                    _isEmailValid = email.endsWith("@gmail.com");
+                    _isPasswordValid = password.length >= 6;
+                  });
+
+                  if (_isEmailValid && _isPasswordValid) {
+                    final user = await _auth.loginUserWithEmailAndPassword(
+                      email,
+                      password,
+                    );
+                    if (user != null) {
+                      log("User Logged In");
+                      Get.snackbar(
+                        "Success",
+                        "Login successful!",
+                        backgroundColor: AppStyles.success,
+                        colorText: AppStyles.backGroundColor,
+                        snackPosition: SnackPosition.TOP,
+                        duration: Duration(seconds: 3),
+                      );
+                      goToHome(context);
+                    } else {
+                      Get.snackbar(
+                        "Error",
+                        "Login failed. Please try again.",
+                        backgroundColor: AppStyles.error,
+                        colorText: AppStyles.backGroundColor,
+                        snackPosition: SnackPosition.TOP,
+                        duration: Duration(seconds: 3),
+                      );
+                    }
+                  } else {
+                    if (!_isEmailValid) {
+                      Get.snackbar(
+                        "Invalid Email",
+                        "Please use a valid email ending with @gmail.com.",
+                        backgroundColor: AppStyles.error,
+                        colorText: AppStyles.backGroundColor,
+                        snackPosition: SnackPosition.TOP,
+                        duration: Duration(seconds: 3),
+                      );
+                    } else if (!_isPasswordValid) {
+                      Get.snackbar(
+                        "Invalid Password",
+                        "Password must be at least 6 characters.",
+                        backgroundColor: AppStyles.error,
+                        colorText: AppStyles.backGroundColor,
+                        snackPosition: SnackPosition.TOP,
+                        duration: Duration(seconds: 3),
+                      );
+                    }
                   }
                 },
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
+              SizedBox(height: AppStyles.spaceM),
+              Text(
+                "or",
+                style: AppStyles.caption,
+              ),
+              SizedBox(height: AppStyles.spaceS),
+              MyTextButton(
+                onPressed: () async {
+                  final user = await _auth.loginWithGoogle();
 
-              const SizedBox(height: 10),
-            Text("or", style: AppStyles.caption,),
-               SizedBox(height: 10),
-              MyTextButton(onPressed:() async {
-                final user = await _auth.loginWithGoogle();
-
-                if (user?.user != null) {
-                  log("User Logged In with Google");
-                  goToHome(context);
-                }
-              }, ),
-              const SizedBox(height: 20),
+                  if (user?.user != null) {
+                    log("User Logged In with Google");
+                    showSnackbar(context, "Login with Google successful!");
+                    goToHome(context);
+                  } else {
+                    showSnackbar(context, "Google login failed.");
+                  }
+                },
+              ),
+              SizedBox(height: AppStyles.spaceL),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have account?", style: AppStyles.caption,),
-                  const SizedBox(width: 5),
+                  Text(
+                    "Don't have an account?",
+                    style: AppStyles.caption,
+                  ),
+                  SizedBox(width: AppStyles.spaceXS),
                   InkWell(
                     onTap: () => goToSignup(context),
-                    child: Text("Sign Up", style: AppStyles.inkwell,)
+                    child: Text(
+                      "Sign Up",
+                      style: AppStyles.inkwell,
+                    ),
                   ),
                 ],
               ),
@@ -102,16 +182,21 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void goToSignup(BuildContext context) =>
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SignupPage()),
-      );
+  void goToSignup(BuildContext context) => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SignupPage()),
+  );
 
   void goToHome(BuildContext context) => Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => Home()),
   );
+
+  void showSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
-
-
