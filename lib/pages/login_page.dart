@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void goToHome(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => Homie()),
+    MaterialPageRoute(builder: (context) => HomePage()),
   );
 
   void showSnackbar(BuildContext context, String message) {
