@@ -2,36 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
 import '../controllers/NoteController.dart';
+import '../widgets/AppStyles.dart';
 
 class Note extends StatelessWidget {
   final NoteController controller = Get.put(NoteController());
   final TextEditingController titleController = TextEditingController();
   final TextEditingController pharController = TextEditingController();
 
+  final Map<String, dynamic>? note;
+
+  Note({this.note}) {
+    // Prefill the text fields if a note is passed
+    if (note != null) {
+      titleController.text = note!["Title"] ?? "";
+      pharController.text = note!["Phar"] ?? "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 43, 43, 43),
+        backgroundColor: AppStyles.dark,
         leading: IconButton(
           icon: const Icon(
-            Icons.arrow_back, // Default arrow icon
-            color: Colors.white, // Change icon color to white
+            Icons.arrow_back,
+            color: Colors.white,
           ),
           onPressed: () {
-            Get.back(); // Navigate back to the previous screen
+            Get.back();
           },
         ),
         actions: [
           IconButton(
             onPressed: () {
-              String id = randomAlphaNumeric(10);
-              Map<String, dynamic> data = {
-                "Title": titleController.text,
-                "Phar": pharController.text,
-                "Id": id,
-              };
-              controller.addNote(data);
+              // If the note exists, update it; otherwise, create a new one
+              if (note != null) {
+                // Update existing note
+                Map<String, dynamic> updatedData = {
+                  "Title": titleController.text,
+                  "Phar": pharController.text,
+                  "Id": note!["Id"],
+                };
+                controller.updateNote(note!["Id"], updatedData);
+              } else {
+                // Add new note
+                String id = randomAlphaNumeric(10);
+                Map<String, dynamic> data = {
+                  "Title": titleController.text,
+                  "Phar": pharController.text,
+                  "Id": id,
+                };
+                controller.addNote(data);
+              }
               Get.back();
             },
             icon: const Icon(
@@ -42,7 +65,7 @@ class Note extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: const Color.fromARGB(255, 43, 43, 43),
+      backgroundColor: AppStyles.dark,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
