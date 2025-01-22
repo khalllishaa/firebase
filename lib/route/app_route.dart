@@ -1,3 +1,6 @@
+import 'package:firebase/binding/notes_binding.dart';
+import 'package:firebase/controllers/note_controller.dart';
+import 'package:firebase/pages/note_page.dart';
 import 'package:get/get.dart';
 import '../pages/login_page.dart';
 import '../pages/signup_page.dart';
@@ -7,6 +10,7 @@ import '../binding/signup_binding.dart';
 class AppRoute {
   static const login = '/login';
   static const signup = '/signup';
+  static const note = '/note';
 }
 
 class AppPage {
@@ -20,6 +24,11 @@ class AppPage {
       name: AppRoute.signup,
       page: () => SignupPage(),
       binding: SignUpBinding(),
+    ),
+    GetPage(
+      name: AppRoute.note,
+      page: () => Note(),
+      binding: NotesBinding(),
     ),
   ];
 }

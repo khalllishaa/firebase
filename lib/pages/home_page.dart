@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-import '../controllers/NoteController.dart';
-import 'notes.dart';
+import '../controllers/note_controller.dart';
+import 'note_page.dart';
 
 class HomePage extends StatelessWidget {
   final NoteController controller = Get.put(NoteController());

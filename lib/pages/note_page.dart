@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
-import '../controllers/NoteController.dart';
+import '../controllers/note_controller.dart';
 
 class Note extends StatelessWidget {
-  final NoteController controller = Get.put(NoteController());
+  final NoteController controller = Get.find();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController pharController = TextEditingController();
 
