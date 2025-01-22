@@ -85,7 +85,7 @@ class Homie extends StatelessWidget {
                   child: Text(
                     "Yes",
                     style:
-                    AppStyles.button.copyWith(color: AppStyles.textColor),
+                        AppStyles.button.copyWith(color: AppStyles.textColor),
                   ),
                 ),
               );
@@ -104,8 +104,9 @@ class Homie extends StatelessWidget {
             var note = controller.notes[index];
             return GestureDetector(
               onTap: () {
-                // Navigate to the Note page when the card is tapped
-                Get.to(() => Note());
+                Get.to(() => Note(
+                      note: note,
+                    ));
               },
               child: Card(
                 margin: EdgeInsets.symmetric(
@@ -135,13 +136,12 @@ class Homie extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: Icon(IconlyBold.delete,
-                            size: AppStyles.iconL,
-                            color: const Color.fromARGB(255, 196, 122, 116)),
+                            size: AppStyles.iconL, color: AppStyles.error),
                         onPressed: () {
                           Get.defaultDialog(
                             title: "Delete",
                             middleText:
-                            "Are you sure you want to delete this data?",
+                                "Are you sure you want to delete this data?",
                             titleStyle: AppStyles.heading1.copyWith(
                                 color: const Color.fromARGB(255, 241, 59, 59)),
                             middleTextStyle: AppStyles.button,
@@ -222,9 +222,9 @@ class EditNoteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController titleController =
-    TextEditingController(text: note["Title"]);
+        TextEditingController(text: note["Title"]);
     TextEditingController pharController =
-    TextEditingController(text: note["Phar"]);
+        TextEditingController(text: note["Phar"]);
 
     return AlertDialog(
       title: const Text("Edit Employee"),

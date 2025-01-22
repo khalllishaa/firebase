@@ -24,7 +24,7 @@ class NoteController extends GetxController {
     String id = data["Id"];
     await DatabaseMethods().addNoteDetails(data, id).then((value) {
       Fluttertoast.showToast(
-        msg: "Employee added successfully",
+        msg: "Note added successfully",
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
@@ -35,7 +35,7 @@ class NoteController extends GetxController {
   void deleteNote(String id) async {
     await DatabaseMethods().deleteNoteDetail(id).then((value) {
       Fluttertoast.showToast(
-        msg: "Employee deleted successfully",
+        msg: "Note deleted successfully",
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );

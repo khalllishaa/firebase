@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppStyles {
-
   // color
   static const Color textColor = Color(0xFF000000);
   static const Color backGroundColor = Color(0xFFFFFFFF);
   static const Color higlightColor = Color(0xFFF44336);
   static const Color success = Color(0xFF5CB338);
   static const Color error = Color(0xFFFD1200);
+  static const Color dark = Color.fromARGB(255, 43, 43, 43);
 
   // padding & margin
   static const double paddingXS = 4.0;
@@ -24,11 +24,28 @@ class AppStyles {
   static const double radiusXXL = 25.0;
 
   // text
-  static TextStyle heading1 = TextStyle(fontSize: 18, fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: AppStyles.textColor,);
-  static TextStyle caption = TextStyle(fontSize: 12, fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: AppStyles.textColor,);
-  static TextStyle text = TextStyle(fontSize: 12, fontFamily: 'Poppins', color: AppStyles.textColor);
-  static TextStyle button = TextStyle(fontSize: 16, fontFamily: 'Poppins', color: AppStyles.backGroundColor);
-  static TextStyle inkwell = TextStyle(fontSize: 12, fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: AppStyles.higlightColor,);
+  static TextStyle heading1 = TextStyle(
+    fontSize: 18,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.bold,
+    color: AppStyles.textColor,
+  );
+  static TextStyle caption = TextStyle(
+    fontSize: 12,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.bold,
+    color: AppStyles.textColor,
+  );
+  static TextStyle text = TextStyle(
+      fontSize: 12, fontFamily: 'Poppins', color: AppStyles.textColor);
+  static TextStyle button = TextStyle(
+      fontSize: 16, fontFamily: 'Poppins', color: AppStyles.backGroundColor);
+  static TextStyle inkwell = TextStyle(
+    fontSize: 12,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.bold,
+    color: AppStyles.higlightColor,
+  );
 
   // Spacing
   static const double spaceXXS = 2.0;
@@ -44,6 +61,4 @@ class AppStyles {
   static const double iconM = 20.0;
   static const double iconL = 24.0;
   static const double iconXL = 28.0;
-
 }
-
