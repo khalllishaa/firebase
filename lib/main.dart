@@ -1,4 +1,4 @@
-import 'package:firebase/pages/login_page.dart';
+import 'package:firebase/routes/app_route.dart';
 import 'package:firebase/service/push_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 0, 0)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      initialRoute: AppRoute.login,
+      getPages: AppPage.pages,
     );
   }
 }

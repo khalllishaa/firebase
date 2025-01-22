@@ -3,50 +3,54 @@ import 'package:firebase/service/database.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
-class EmployeeController extends GetxController {
+class NoteController extends GetxController {
   var name = ''.obs;
   var age = ''.obs;
   var location = ''.obs;
-  var employees = [].obs;
 
-  void fetchEmployees() async {
-    var stream = await DatabaseMethods().getEmployeeDetails();
+  var notes = [].obs;
+
+  var title = ''.obs;
+  var phar = ''.obs;
+
+  void fetchNotes() async {
+    var stream = await DatabaseMethods().getNoteDetails();
     stream.listen((snapshot) {
-      employees.value = snapshot.docs.map((doc) => doc.data()).toList();
+      notes.value = snapshot.docs.map((doc) => doc.data()).toList();
     });
   }
 
-  void addEmployee(Map<String, dynamic> data) async {
+  void addNote(Map<String, dynamic> data) async {
     String id = data["Id"];
-    await DatabaseMethods().addEmployeeDetails(data, id).then((value) {
+    await DatabaseMethods().addNoteDetails(data, id).then((value) {
       Fluttertoast.showToast(
         msg: "Employee added successfully",
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
-      fetchEmployees();
+      fetchNotes();
     });
   }
 
-  void deleteEmployee(String id) async {
-    await DatabaseMethods().deleteEmployeeDetail(id).then((value) {
+  void deleteNote(String id) async {
+    await DatabaseMethods().deleteNoteDetail(id).then((value) {
       Fluttertoast.showToast(
         msg: "Employee deleted successfully",
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      fetchEmployees();
+      fetchNotes();
     });
   }
 
-  void updateEmployee(String id, Map<String, dynamic> data) async {
-    await DatabaseMethods().updateEmployeeDetail(id, data).then((value) {
+  void updateNote(String id, Map<String, dynamic> data) async {
+    await DatabaseMethods().updateNoteDetail(id, data).then((value) {
       Fluttertoast.showToast(
         msg: "Employee updated successfully",
         backgroundColor: Colors.blue,
         textColor: Colors.white,
       );
-      fetchEmployees();
+      fetchNotes();
     });
   }
 }

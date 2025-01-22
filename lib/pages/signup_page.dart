@@ -122,7 +122,7 @@ class _SignupPageState extends State<SignupPage> {
 
   void goToHome(BuildContext context) => Navigator.pushReplacement(
     context,
-    MaterialPageRoute(builder: (context) => Homie()),
+    MaterialPageRoute(builder: (context) => HomePage()),
   );
 
   Future<void> _signup() async {

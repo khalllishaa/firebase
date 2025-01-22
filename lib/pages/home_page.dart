@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-import '../controllers/NoteController.dart';
+import '../controllers/note_controllers.dart';
 import 'notes.dart';
 
-class Homie extends StatelessWidget {
+class HomePage extends StatelessWidget {
   final NoteController controller = Get.put(NoteController());
 
   @override
@@ -15,9 +15,9 @@ class Homie extends StatelessWidget {
     controller.fetchNotes();
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Disable the back button
+        automaticallyImplyLeading: false,
         title: Align(
-          alignment: Alignment.centerLeft, // Align title to the left
+          alignment: Alignment.centerLeft,
           child: Text(
             "Notes",
             style: AppStyles.heading1,
@@ -30,12 +30,12 @@ class Homie extends StatelessWidget {
               controller.fetchNotes();
             },
           ),
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: () {
-              controller.fetchNotes();
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.person),
+          //   onPressed: () {
+          //     controller.fetchNotes();
+          //   },
+          // ),
           IconButton(
             icon: const Icon(Icons.exit_to_app_outlined),
             onPressed: () {
